@@ -49,14 +49,51 @@ def find_peak_in_matrix(matrix):
     return peaks
 
 
+# chessboard is 8 X 8, if place the queen on the first square (0,0)
+# only queen can be for a one row, same goes to a column.
+# According to the question of where queens are not allowed to see each other,
+# therefore maximum queens can be placed should be 8
+# starting from 0,0
+def place_queen_in_chessboard(matrix):
+
+    colum_dic = {}  # keep track of columns used
+    count = 0
+    position_array = []
+    # count += 1
+    # colum_dic[0] = 0
+    # first piece placed
+    i = 0
+    j = 0
+    # last row shouldn't have a queen, since all position are already occupied
+    while i < len(matrix)-1:
+        while j < len(matrix):
+            if j not in colum_dic.keys():
+                position_array.append([i, j])
+                colum_dic[j] = j
+                count += 1
+                if j + 2 >= len(matrix):
+                    j = 0
+                elif j + 2 < len(matrix):
+                    j += 2
+                # since no queen can go in the same row
+                break
+            else:
+                j += 1
+        i += 1
+    return position_array, count
+
 if __name__ == '__main__':
     # print(find_max_profits([35, 45, 6, 10, 22, 11, 80]))
     # print(find_id_peak([1, 0, 0, 0, 0, 0, 1]))
 
-    A = [[1, 2, 3, 4], #0
-         [5, 6, 7, 8], #1
-         [2, 20, 12, 8],#2
-         [25, 2, 30, 8],#3
-         [25, 16, 6, 8],#4
+    A = [[1, 2, 3, 4],  # 0
+         [5, 6, 7, 8],  # 1
+         [2, 20, 12, 8],  # 2
+         [25, 2, 30, 8],  # 3
+         [25, 16, 6, 8],  # 4
          ]
-    print(find_peak_in_matrix(A))
+    # print(find_peak_in_matrix(A))
+
+    rows, cols = (8, 8)
+    arr = [[0] * cols] * rows
+    print(place_queen_in_chessboard(arr))
