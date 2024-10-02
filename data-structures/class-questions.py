@@ -55,7 +55,6 @@ def find_peak_in_matrix(matrix):
 # therefore maximum queens can be placed should be 8
 # starting from 0,0
 def place_queen_in_chessboard(matrix):
-
     colum_dic = {}  # keep track of columns used
     count = 0
     position_array = []
@@ -65,7 +64,7 @@ def place_queen_in_chessboard(matrix):
     i = 0
     j = 0
     # last row shouldn't have a queen, since all position are already occupied
-    while i < len(matrix)-1:
+    while i < len(matrix) - 1:
         while j < len(matrix):
             if j not in colum_dic.keys():
                 position_array.append([i, j])
@@ -82,6 +81,25 @@ def place_queen_in_chessboard(matrix):
         i += 1
     return position_array, count
 
+
+def find_value_using_brute_force(size, array, sum):
+    i = 0
+    j = 0
+    k = 0
+    result = []
+    while i < len(array):
+        j = i + 1
+        while j < len(array):
+            k = j + 1
+            while k < len(array):
+                if array[i] + array[j] + array[k] == sum:
+                    result.append([array[i], array[j], array[k]])
+                k += 1
+            j += 1
+        i += 1
+    return result
+
+
 if __name__ == '__main__':
     # print(find_max_profits([35, 45, 6, 10, 22, 11, 80]))
     # print(find_id_peak([1, 0, 0, 0, 0, 0, 1]))
@@ -96,4 +114,5 @@ if __name__ == '__main__':
 
     rows, cols = (8, 8)
     arr = [[0] * cols] * rows
-    print(place_queen_in_chessboard(arr))
+    # print(place_queen_in_chessboard(arr))
+    print(find_value_using_brute_force(8, [1,4,8,9,10,44], sum=56))
