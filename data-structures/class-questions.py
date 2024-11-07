@@ -1,5 +1,9 @@
 from enum import Enum
 
+import random
+import math
+
+
 
 def find_max_profits(price_array):
     # this will be O(n^2) time complexity solution , space complexity 1 (because just two variables)
@@ -119,3 +123,29 @@ if __name__ == '__main__':
     arr = [[0] * cols] * rows
     # print(place_queen_in_chessboard(arr))
     # print(find_value_using_brute_force(8, [1,4,8,9,10,44], sum=56))
+
+
+def calculate_pie_values():
+
+    initial_train = 10000000
+    trials = initial_train
+    hit = 0
+
+    while trials >= 0:
+        # throw dart randomly
+        x = random.uniform(0, 1)
+        y = random.uniform(0, 1)
+        # print(x,y , 'x,y')
+        # check if the dart falls into the circle
+        distance = abs(math.sqrt(((x - 0.5)*(x - 0.5)) + ((y - 0.5)*(y-0.5))))
+        if distance <= 0.5:
+            hit += 1
+        trials -= 1
+        print( 'hits: ', hit)
+    return 4 * (hit / initial_train)
+
+
+
+if __name__ == '__main__':
+
+    print(calculate_pie_values());
