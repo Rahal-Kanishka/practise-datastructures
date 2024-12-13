@@ -145,7 +145,44 @@ def calculate_pie_values():
     return 4 * (hit / initial_train)
 
 
+def findLongestNonDecreasing_subsequence(arr):
+    # every two adjacent elements the bigger number is at least twice the smaller one
+    max_subsequence = []
+    max_length = 0
+    subsequence = [] # start of arra, end of array
+    subsequence_length = 0
+    # using brute force
+    for i in range(len(arr)-1):
+        if arr[i+1] >= (arr[i] * 2):
+            subsequence.append(i)
+            subsequence_length += 1
+        elif i > 1 and arr[i] >= (arr[i-1] * 2):
+            subsequence.append(i)
+            subsequence_length += 1
+            if subsequence_length > max_length:
+                max_subsequence = subsequence
+                max_length = subsequence_length
+            # clearing sequence since next element is not qualified, only the previous element is qualified
+            subsequence = []
+            subsequence_length = 0
+        elif subsequence_length > max_length:
+            max_subsequence = subsequence
+            max_length = subsequence_length
+            subsequence = []
+            subsequence_length = 0
+            # erase subsequence array
+        print(i, arr[i], arr[i+1], subsequence, max_subsequence)
+
+    # last check before loop exit
+    if subsequence_length > max_length:
+        max_subsequence = subsequence
+        max_length = subsequence_length
+        subsequence = []
+        subsequence_length = 0
+    return max_subsequence
 
 if __name__ == '__main__':
 
-    print(calculate_pie_values());
+    # print(calculate_pie_values());
+
+    print(findLongestNonDecreasing_subsequence([1, 9, 6, 12, 7, 15, 31, 6, 12, 25, 51, 103]))
