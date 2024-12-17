@@ -2,7 +2,7 @@ from enum import Enum
 
 import random
 import math
-
+import classes
 
 
 def find_max_profits(price_array):
@@ -126,7 +126,6 @@ if __name__ == '__main__':
 
 
 def calculate_pie_values():
-
     initial_train = 10000000
     trials = initial_train
     hit = 0
@@ -137,11 +136,11 @@ def calculate_pie_values():
         y = random.uniform(0, 1)
         # print(x,y , 'x,y')
         # check if the dart falls into the circle
-        distance = abs(math.sqrt(((x - 0.5)*(x - 0.5)) + ((y - 0.5)*(y-0.5))))
+        distance = abs(math.sqrt(((x - 0.5) * (x - 0.5)) + ((y - 0.5) * (y - 0.5))))
         if distance <= 0.5:
             hit += 1
         trials -= 1
-        print( 'hits: ', hit)
+        print('hits: ', hit)
     return 4 * (hit / initial_train)
 
 
@@ -149,14 +148,14 @@ def findLongestNonDecreasing_subsequence(arr):
     # every two adjacent elements the bigger number is at least twice the smaller one
     max_subsequence = []
     max_length = 0
-    subsequence = [] # start of arra, end of array
+    subsequence = []  # start of arra, end of array
     subsequence_length = 0
     # using brute force
-    for i in range(len(arr)-1):
-        if arr[i+1] >= (arr[i] * 2):
+    for i in range(len(arr) - 1):
+        if arr[i + 1] >= (arr[i] * 2):
             subsequence.append(i)
             subsequence_length += 1
-        elif i > 1 and arr[i] >= (arr[i-1] * 2):
+        elif i > 1 and arr[i] >= (arr[i - 1] * 2):
             subsequence.append(i)
             subsequence_length += 1
             if subsequence_length > max_length:
@@ -171,7 +170,7 @@ def findLongestNonDecreasing_subsequence(arr):
             subsequence = []
             subsequence_length = 0
             # erase subsequence array
-        print(i, arr[i], arr[i+1], subsequence, max_subsequence)
+        print(i, arr[i], arr[i + 1], subsequence, max_subsequence)
 
     # last check before loop exit
     if subsequence_length > max_length:
@@ -181,8 +180,41 @@ def findLongestNonDecreasing_subsequence(arr):
         subsequence_length = 0
     return max_subsequence
 
+
+class DynamicStack:
+    def __init__(self):
+        self.items = []
+        self.maxLength = 100
+        self.top = 0
+
+    def push(self, value):
+        if len(self.items) == self.maxLength:
+            self.maxLength += self.maxLength
+        self.items.append(value)
+        self.top += 1
+
+    def pop(self):
+        if self.top > 1:
+            self.top -= 1
+            return self.items.pop()
+        else:
+            return -1
+
+    def peek(self):
+        return self.items[self.top-1]
+
+    def __str__(self):
+        return "top: " + str(self.peek()) + " length: " + str(len(self.items)) + ", maxLength: " + str(self.maxLength)
+
+
 if __name__ == '__main__':
 
     # print(calculate_pie_values());
 
-    print(findLongestNonDecreasing_subsequence([1, 9, 6, 12, 7, 15, 31, 6, 12, 25, 51, 103]))
+    stack = DynamicStack()
+    i = 0
+    while i < 403:
+        stack.push(i)
+        i += 1
+
+    print(stack)
