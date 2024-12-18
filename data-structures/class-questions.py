@@ -2,7 +2,6 @@ from enum import Enum
 
 import random
 import math
-import classes
 
 
 def find_max_profits(price_array):
@@ -186,6 +185,7 @@ class DynamicStack:
         self.items = []
         self.maxLength = 100
         self.top = 0
+        self.rear = 0
 
     def push(self, value):
         if len(self.items) == self.maxLength:
@@ -207,14 +207,117 @@ class DynamicStack:
         return "top: " + str(self.peek()) + " length: " + str(len(self.items)) + ", maxLength: " + str(self.maxLength)
 
 
+class DynamicCircularQueue:
+    # using front and rear pointers to avoid shift all elements when add remove items
+    def __init__(self):
+        self.front = -1
+        self.rear = -1
+        self.count = 0
+        self.maxSize = 5
+        self.items = [None] * self.maxSize  # Preallocate space
+
+    def resize(self):
+        print("Resizing the array...")
+        new_size = self.maxSize * 2  # Double the size
+        new_items = [None] * new_size  # New larger array
+
+        # Copy elements to the new array in proper order
+        for i in range(self.count):
+            new_items[i] = self.items[(self.front + i) % self.maxSize]
+
+        # Update references
+        self.items = new_items
+        self.front = 0
+        self.rear = self.count-1
+        self.maxSize = new_size
+        print(self)
+
+    def enqueue(self, item):
+        if self.isFull():
+            # if full extend the array
+            self.resize()
+            # check the rear is at the end an
+        elif self.rear == self.maxSize:
+            # since array is not empty and the rear is at the end, insert it to the front
+            self.rear = 0
+        if self.isEmpty():
+            self.items[0] = item
+            self.rear += 1
+            self.front += 1
+            self.count += 1
+            return
+        # else:
+
+        self.count += 1
+        # after inserting item evaluate rear
+        if self.rear >= self.maxSize-1:
+            self.rear = 0
+        else:
+            self.rear += 1
+        self.items[self.rear] = item
+
+    def dequeue(self):
+        if self.isEmpty():
+            return Exception("Queue is empty")
+        else:
+            result = self.items[self.front]
+            self.items[self.front] = None
+        if self.front == self.maxSize:
+            self.front = 0
+        else:
+            self.front += 1
+        self.count -= 1
+        return result
+
+    def peek(self):
+        return self.items[self.front]
+
+    def rearItem(self):
+        return self.items[self.rear]
+
+    def isFull(self):
+        return self.count == self.maxSize
+
+    def isEmpty(self):
+        return self.count == 0
+
+    def size(self):
+        return self.count
+
+    def __str__(self):
+        return (str(self.items) + " count: " + str(self.count) + " ,front: " + str(self.front)
+                + ", rear: " + str(self.rear) + ", maxSize: " + str(self.maxSize))
+
 if __name__ == '__main__':
 
     # print(calculate_pie_values());
 
-    stack = DynamicStack()
+    stack = DynamicCircularQueue()
     i = 0
-    while i < 403:
-        stack.push(i)
+    print(stack)
+    while i < 7:
+        stack.enqueue(i)
         i += 1
+        print(stack)
 
+
+
+
+
+    stack.enqueue(101)
+
+    stack.enqueue(102)
+    stack.enqueue(103)
+    print(stack)
+    print('2 dequeues')
+    stack.dequeue()
+    stack.dequeue()
+    print(stack)
+    stack.enqueue(104)
+    print(stack)
+    stack.enqueue(105)
+    print(stack)
+    stack.enqueue(106)
+    print(stack)
+    stack.dequeue()
     print(stack)
