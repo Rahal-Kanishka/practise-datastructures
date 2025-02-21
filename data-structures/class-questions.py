@@ -272,52 +272,74 @@ class DynamicCircularQueue:
     def peek(self):
         return self.items[self.front]
 
-    def rearItem(self):
-        return self.items[self.rear]
-
     def isFull(self):
         return self.count == self.maxSize
 
     def isEmpty(self):
         return self.count == 0
 
-    def size(self):
-        return self.count
-
     def __str__(self):
         return (str(self.items) + " count: " + str(self.count) + " ,front: " + str(self.front)
                 + ", rear: " + str(self.rear) + ", maxSize: " + str(self.maxSize))
 
+
+class MaxHeap:
+    def __init__(self, size=100):
+        self.size = size
+        self.heap = []
+
+    def build_from_array(self, arr):
+        # Sorts the array and inserts one element at a time
+        sorted_arr = sorted(arr, reverse=True)  # Sort array in descending order
+        self.heap = []  # Clear the heap
+        for element in sorted_arr:
+            self.insert(element)
+
+    def insert(self, val):
+        """Inserts a new integer into the heap."""
+        if len(self.heap) >= self.size:
+            raise Exception("Heap is full")
+        self.heap.append(val)
+        self._heapify_up(len(self.heap) - 1)
+
+    def max(self):
+        if not self.heap:
+            raise Exception("Heap is empty")
+        max_value = self.heap[0]
+        self.heap[0] = self.heap[-1]  # Move last element to the root
+        self.heap.pop()  # Remove last element
+        self._heapify_down(0)  # Restore heap property
+        return max_value
+
+    def _heapify_up(self, i):
+        # Ensures the heap property is maintained from the node upwards
+        parent = (i - 1) // 2
+        if i > 0 and self.heap[i] > self.heap[parent]:
+            self.heap[i], self.heap[parent] = self.heap[parent], self.heap[i]
+            self._heapify_up(parent)
+
+    def _heapify_down(self, i):
+        # Ensures the heap property is maintained from the node downwards
+        n = len(self.heap)
+        largest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
+
+        if left < n and self.heap[left] > self.heap[largest]:
+            largest = left
+        if right < n and self.heap[right] > self.heap[largest]:
+            largest = right
+
+        if largest != i:
+            self.heap[i], self.heap[largest] = self.heap[largest], self.heap[i]
+            self._heapify_down(largest)
+
+    def __str__(self):
+        return str(self.heap)
+
 if __name__ == '__main__':
 
     # print(calculate_pie_values());
-
-    stack = DynamicCircularQueue()
-    i = 0
-    print(stack)
-    while i < 7:
-        stack.enqueue(i)
-        i += 1
-        print(stack)
-
-
-
-
-
-    stack.enqueue(101)
-
-    stack.enqueue(102)
-    stack.enqueue(103)
-    print(stack)
-    print('2 dequeues')
-    stack.dequeue()
-    stack.dequeue()
-    print(stack)
-    stack.enqueue(104)
-    print(stack)
-    stack.enqueue(105)
-    print(stack)
-    stack.enqueue(106)
-    print(stack)
-    stack.dequeue()
-    print(stack)
+    heap = MaxHeap()
+    heap.build_from_array([2,6,8,0,6])
+    print(heap)
