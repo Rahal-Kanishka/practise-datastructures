@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 import matplotlib.pyplot as plt
 import networkx as nx
 
@@ -30,12 +30,18 @@ class Graph:
         # Default dictionary to store graph
         self.graph = defaultdict(list)
 
+    def __len__(self):
+        return len(self.graph)
+
     # Function to add an edge to graph
     def add_edge(self, u, v):
         self.graph[u].append(v)
 
     def get_graph(self):
         return self.graph
+
+    def set_graph(self, g):
+        self.graph = g
 
     def add_node(self, u):
         self.graph[u] = {}
@@ -54,6 +60,21 @@ class Graph:
 
     def __str__(self):
         return str(self.graph)
+
+    def myBreadthFirstSearch(self):
+        size = len(self.graph)
+        visited = [False] * size
+        queue = [0]  # assume start note is 0
+
+        while queue:
+            print('queue: ', queue)
+            v = queue.pop(0)
+            visited[v] = True
+            print('neighbors: ', self.graph[v])
+            for neighbor in self.graph[v]:
+                if not visited[neighbor]:
+                    queue.append(neighbor) # append the neighbours to the q is not visited
+
 
     def BFS(self, s):
 
@@ -98,7 +119,7 @@ class Graph:
         print('nodes: ', nodes, 'directed: ', directed)
         g = Graph()
         # initialize the graph
-        for node in range(1, int(nodes) + 1):
+        for node in range(0, int(nodes)):
             g.add_node(node)
         print('nodes: ', g)
         for line in file:
@@ -115,6 +136,10 @@ class Graph:
         for node in range(1, len(graph_instance.get_graph()) + 1):
             degree_array[node-1] = (len(graph_instance.get_graph()[node]))
         return degree_array
+
+    # def sort_by_degree(self, graph_instance):
+    #     # find the nodes of the max degree
+
 
 
 # Driver code
@@ -153,5 +178,7 @@ if __name__ == '__main__':
     # plt.show()
     graph = g.initiate_from_file()
     print('graph: ', graph)
-    degree = g.calculate_degree(graph)
-    print('degree: ', degree)
+    g.set_graph(graph.get_graph())
+    # degree = g.calculate_degree(graph)
+    # print('degree: ', degree)
+    g.myBreadthFirstSearch()
