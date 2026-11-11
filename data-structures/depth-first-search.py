@@ -1,11 +1,10 @@
-
-def dfs(self, grid, i,j, visited=None):
+def dfs(self, grid, i,j, visited):
     # if j-1, i-1, j+1, i+1 tries to goes out of the boarder
     if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]):
         return 0
     # print(f"inside dfs i: {i}, j: {j}")
     # check already visited
-    if visited[i][j] == True:
+    if visited[i][j]:
         return 0
     # print('veisited in dfs: ', visited)
     visited[i][j] = True
@@ -34,9 +33,9 @@ def numIslands(self, grid):
     visited = [[False] * m for _ in range(n)]  
     # print(f"n: {n}, m: {m}") 
     # print('visited created: ', visited)
-    while( i >= 0 and i < n):
+    while(i < n):
         j = 0
-        while( j >= 0 and j< m):
+        while(j< m):
             count += self.dfs(grid, i, j, visited)
             # print(f"i: {i} j: {j}, visited: {visited[i][j]}, count: {count}")
             j+=1
